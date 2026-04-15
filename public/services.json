@@ -1,0 +1,43 @@
+[
+  {
+    "id": "keycloak",
+    "name": "Keycloak",
+    "description": "Identity & Access Management",
+    "path": "/keycloak",
+    "icon": "key",
+    "category": "security",
+    "requiresAuth": false
+  },
+  {
+    "id": "argocd",
+    "name": "Argo CD",
+    "description": "GitOps Continuous Delivery",
+    "path": "/argocd",
+    "icon": "git-branch",
+    "category": "deployment"
+  },
+  {
+    "id": "grafana",
+    "name": "Grafana",
+    "description": "Observability & Dashboards",
+    "path": "/grafana",
+    "icon": "chart",
+    "category": "monitoring"
+  },
+  {
+    "id": "backstage",
+    "name": "Backstage",
+    "description": "Developer Portal",
+    "path": "/backstage",
+    "icon": "code",
+    "category": "developer"
+  },
+  {
+    "id": "gitea",
+    "name": "Gitea",
+    "description": "Git Repository Service",
+    "path": "/gitea",
+    "icon": "git",
+    "category": "developer"
+  }
+]
