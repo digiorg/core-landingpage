@@ -24,16 +24,16 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copy built assets from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Create non-root user
-RUN adduser -D -g '' appuser && \
-    chown -R appuser:appuser /usr/share/nginx/html && \
-    chown -R appuser:appuser /var/cache/nginx && \
-    chown -R appuser:appuser /var/log/nginx && \
+# Configure permissions for nginx user (UID 101)
+# This ensures the container can run as non-root with runAsUser: 101
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
     touch /var/run/nginx.pid && \
-    chown -R appuser:appuser /var/run/nginx.pid
+    chown -R nginx:nginx /var/run/nginx.pid
 
-# Use non-root user
-USER appuser
+# Run as nginx user (UID 101)
+USER nginx
 
 # Expose port
 EXPOSE 8080
