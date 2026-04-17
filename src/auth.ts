@@ -3,6 +3,8 @@ import { getConfig } from './config';
 import type { UserInfo } from './types';
 
 let keycloakInstance: Keycloak | null = null;
+let authInitialized = false;
+let authError: string | null = null;
 
 /**
  * Initialize Keycloak authentication
@@ -25,6 +27,9 @@ export async function initAuth(): Promise<boolean> {
       pkceMethod: 'S256'
     });
 
+    authInitialized = true;
+    authError = null;
+
     if (authenticated) {
       // Set up token refresh
       setupTokenRefresh();
@@ -33,17 +38,30 @@ export async function initAuth(): Promise<boolean> {
     return authenticated;
   } catch (error) {
     console.error('Failed to initialize Keycloak:', error);
+    authInitialized = false;
+    authError = error instanceof Error ? error.message : 'Authentication service unavailable';
     return false;
   }
 }
 
 /**
  * Trigger login flow
+ * Throws error if Keycloak is not available
  */
 export function login(): void {
-  if (keycloakInstance) {
-    keycloakInstance.login();
+  if (!keycloakInstance) {
+    const errorMsg = 'Authentication service is not available. Please try again later.';
+    console.error(errorMsg);
+    throw new Error(errorMsg);
   }
+  
+  if (!authInitialized) {
+    const errorMsg = authError || 'Authentication service failed to initialize.';
+    console.error(errorMsg);
+    throw new Error(errorMsg);
+  }
+  
+  keycloakInstance.login();
 }
 
 /**
@@ -80,6 +98,20 @@ export function getUserInfo(): UserInfo | null {
  */
 export function isAuthenticated(): boolean {
   return keycloakInstance?.authenticated || false;
+}
+
+/**
+ * Check if auth service is available
+ */
+export function isAuthAvailable(): boolean {
+  return authInitialized && keycloakInstance !== null;
+}
+
+/**
+ * Get auth error message if any
+ */
+export function getAuthError(): string | null {
+  return authError;
 }
 
 /**

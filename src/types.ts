@@ -22,6 +22,7 @@ export interface PlatformService {
   icon?: string;
   category?: ServiceCategory;
   requiresAuth?: boolean;
+  displayOrder?: number;
 }
 
 /**
@@ -60,6 +61,7 @@ export interface AppState {
   services: PlatformService[];
   loading: boolean;
   error: string | null;
+  authAvailable: boolean;
 }
 
 /**

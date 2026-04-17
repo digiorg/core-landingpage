@@ -1,43 +1,52 @@
 [
   {
     "id": "keycloak",
-    "name": "Keycloak",
-    "description": "Identity & Access Management",
+    "name": "Identity & Access",
+    "description": "Authentication and authorization",
     "path": "/keycloak",
     "icon": "key",
     "category": "security",
-    "requiresAuth": false
-  },
-  {
-    "id": "argocd",
-    "name": "Argo CD",
-    "description": "GitOps Continuous Delivery",
-    "path": "/argocd",
-    "icon": "git-branch",
-    "category": "deployment"
-  },
-  {
-    "id": "grafana",
-    "name": "Grafana",
-    "description": "Observability & Dashboards",
-    "path": "/grafana",
-    "icon": "chart",
-    "category": "monitoring"
+    "requiresAuth": false,
+    "displayOrder": 1
   },
   {
     "id": "backstage",
-    "name": "Backstage",
-    "description": "Developer Portal",
+    "name": "Developer Portal",
+    "description": "Service catalog and documentation",
     "path": "/backstage",
     "icon": "code",
-    "category": "developer"
+    "category": "developer",
+    "requiresAuth": false,
+    "displayOrder": 2
   },
   {
     "id": "gitea",
-    "name": "Gitea",
-    "description": "Git Repository Service",
+    "name": "Source Control",
+    "description": "Git repositories and code review",
     "path": "/gitea",
     "icon": "git",
-    "category": "developer"
+    "category": "developer",
+    "requiresAuth": false,
+    "displayOrder": 3
+  },
+  {
+    "id": "argocd",
+    "name": "GitOps",
+    "description": "Continuous delivery and deployments",
+    "path": "/argocd",
+    "icon": "rocket",
+    "category": "deployment",
+    "requiresAuth": true,
+    "displayOrder": 4
+  },
+  {
+    "id": "grafana",
+    "name": "Monitoring",
+    "description": "Metrics and dashboards",
+    "path": "/grafana",
+    "icon": "chart",
+    "category": "monitoring",
+    "requiresAuth": true,
+    "displayOrder": 5
   }
 ]
