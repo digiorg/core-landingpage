@@ -4,6 +4,29 @@
  */
 
 const icons: Record<string, string> = {
+  // DigiOrg Logo (Hub & Spoke)
+  'digiorg-logo': `<svg viewBox="0 0 40 40" fill="none">
+    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+    <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="20" cy="20" r="6" fill="currentColor"/>
+    <circle cx="20" cy="4" r="2.5" fill="currentColor"/>
+    <circle cx="32" cy="10" r="2.5" fill="currentColor"/>
+    <circle cx="36" cy="20" r="2.5" fill="currentColor"/>
+    <circle cx="32" cy="30" r="2.5" fill="currentColor"/>
+    <circle cx="20" cy="36" r="2.5" fill="currentColor"/>
+    <circle cx="8" cy="30" r="2.5" fill="currentColor"/>
+    <circle cx="4" cy="20" r="2.5" fill="currentColor"/>
+    <circle cx="8" cy="10" r="2.5" fill="currentColor"/>
+    <line x1="20" y1="6.5" x2="20" y2="14" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+    <line x1="30" y1="11" x2="24" y2="16" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+    <line x1="34" y1="20" x2="26" y2="20" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+    <line x1="30" y1="29" x2="24" y2="24" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+    <line x1="20" y1="33.5" x2="20" y2="26" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+    <line x1="10" y1="29" x2="16" y2="24" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+    <line x1="6" y1="20" x2="14" y2="20" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+    <line x1="10" y1="11" x2="16" y2="16" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+  </svg>`,
+  
   // Security
   key: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
@@ -110,6 +133,13 @@ const icons: Record<string, string> = {
     <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
     <polyline points="10 17 15 12 10 7"/>
     <line x1="15" y1="12" x2="3" y2="12"/>
+  </svg>`,
+  
+  // Alert
+  'alert-circle': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="12" y1="8" x2="12" y2="12"/>
+    <line x1="12" y1="16" x2="12.01" y2="16"/>
   </svg>`
 };
 

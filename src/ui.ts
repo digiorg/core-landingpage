@@ -1,6 +1,6 @@
 import { buildUrl } from './config';
-import { login, logout, getUserInfo, isAuthenticated } from './auth';
-import { groupByCategory, getCategoryName } from './services';
+import { login, logout, getUserInfo, isAuthenticated, isAuthAvailable, getAuthError } from './auth';
+import { getCategoryName } from './services';
 import { toggleTheme, getTheme } from './theme';
 import { getIcon } from './icons';
 import type { PlatformService, Theme } from './types';
@@ -14,44 +14,37 @@ export function renderApp(services: PlatformService[], theme: Theme): void {
 
   const user = getUserInfo();
   const authenticated = isAuthenticated();
-  const grouped = groupByCategory(services);
+  const authAvailable = isAuthAvailable();
+  const authError = getAuthError();
 
   app.innerHTML = `
     <div class="app-container">
-      ${renderHeader(authenticated, user?.username, theme)}
+      ${renderHeader(authenticated, user?.username, theme, authAvailable)}
       <main class="main-content">
+        ${authError ? renderAuthError(authError) : ''}
         ${authenticated ? renderWelcome(user?.name || user?.username) : renderLoginPrompt()}
-        ${renderServices(grouped, authenticated)}
+        ${renderServices(services, authenticated)}
       </main>
       ${renderFooter()}
     </div>
   `;
 
-  attachEventListeners();
+  attachEventListeners(authAvailable);
 }
 
 /**
  * Render header with logo, user info, and theme toggle
  */
-function renderHeader(authenticated: boolean, username?: string, theme?: Theme): string {
+function renderHeader(authenticated: boolean, username?: string, theme?: Theme, authAvailable?: boolean): string {
   const currentTheme = theme || getTheme();
   
   return `
     <header class="header">
       <div class="header-left">
-        <div class="logo">
-          <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
-            <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
-            <circle cx="20" cy="20" r="8" fill="currentColor"/>
-            <circle cx="20" cy="6" r="3" fill="currentColor"/>
-            <circle cx="32" cy="14" r="3" fill="currentColor"/>
-            <circle cx="32" cy="26" r="3" fill="currentColor"/>
-            <circle cx="20" cy="34" r="3" fill="currentColor"/>
-            <circle cx="8" cy="26" r="3" fill="currentColor"/>
-            <circle cx="8" cy="14" r="3" fill="currentColor"/>
-          </svg>
+        <a href="/" class="logo" aria-label="DigiOrg Platform Home">
+          ${getIcon('digiorg-logo').replace('<svg', '<svg class="logo-icon"')}
           <span class="logo-text">DigiOrg Platform</span>
-        </div>
+        </a>
       </div>
       <div class="header-right">
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
@@ -67,13 +60,25 @@ function renderHeader(authenticated: boolean, username?: string, theme?: Theme):
             </button>
           </div>
         ` : `
-          <button class="btn btn-primary" id="login-btn">
+          <button class="btn btn-primary" id="login-btn" ${!authAvailable ? 'disabled title="Authentication service unavailable"' : ''}>
             ${getIcon('log-in')}
             <span>Login</span>
           </button>
         `}
       </div>
     </header>
+  `;
+}
+
+/**
+ * Render auth error banner
+ */
+function renderAuthError(error: string): string {
+  return `
+    <div class="auth-error">
+      ${getIcon('alert-circle')}
+      <span>Authentication service unavailable: ${escapeHtml(error)}</span>
+    </div>
   `;
 }
 
@@ -97,56 +102,42 @@ function renderLoginPrompt(): string {
   return `
     <section class="welcome">
       <h1>Welcome to DigiOrg Platform</h1>
-      <p>Please log in to access platform services.</p>
+      <p>Please log in to access all platform services.</p>
     </section>
   `;
 }
 
 /**
- * Render services grouped by category
+ * Render services in a flat grid (no category separators)
  */
-function renderServices(
-  grouped: Map<string, PlatformService[]>,
-  authenticated: boolean
-): string {
-  if (grouped.size === 0) {
+function renderServices(services: PlatformService[], authenticated: boolean): string {
+  if (services.length === 0) {
     return `
-      <section class="services-empty">
-        <p>No services available.</p>
+      <section class="services">
+        <div class="service-grid">
+          <p>No services available.</p>
+        </div>
       </section>
     `;
   }
 
-  // Sort categories
-  const categoryOrder = ['security', 'deployment', 'monitoring', 'developer', 'data', 'messaging', 'other'];
-  const sortedCategories = [...grouped.keys()].sort(
-    (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
-  );
-
   return `
     <section class="services">
-      ${sortedCategories.map(category => {
-        const services = grouped.get(category) || [];
-        return `
-          <div class="service-category">
-            <h2 class="category-title">${getCategoryName(category)}</h2>
-            <div class="service-grid">
-              ${services.map(service => renderServiceCard(service, authenticated)).join('')}
-            </div>
-          </div>
-        `;
-      }).join('')}
+      <div class="service-grid">
+        ${services.map(service => renderServiceCard(service, authenticated)).join('')}
+      </div>
     </section>
   `;
 }
 
 /**
- * Render individual service card
+ * Render individual service card (square tile with category badge)
  */
 function renderServiceCard(service: PlatformService, authenticated: boolean): string {
   const url = buildUrl(service.path);
   const requiresAuth = service.requiresAuth !== false;
   const disabled = requiresAuth && !authenticated;
+  const categoryName = service.category ? getCategoryName(service.category) : '';
 
   return `
     <a 
@@ -160,7 +151,7 @@ function renderServiceCard(service: PlatformService, authenticated: boolean): st
       </div>
       <div class="service-info">
         <h3 class="service-name">${escapeHtml(service.name)}</h3>
-        <p class="service-description">${escapeHtml(service.description)}</p>
+        ${categoryName ? `<span class="service-category">${escapeHtml(categoryName)}</span>` : ''}
       </div>
       ${disabled ? '<span class="service-lock">🔒</span>' : ''}
     </a>
@@ -181,7 +172,7 @@ function renderFooter(): string {
 /**
  * Attach event listeners
  */
-function attachEventListeners(): void {
+function attachEventListeners(authAvailable: boolean): void {
   // Theme toggle
   const themeToggle = document.getElementById('theme-toggle');
   themeToggle?.addEventListener('click', () => {
@@ -194,7 +185,19 @@ function attachEventListeners(): void {
 
   // Login button
   const loginBtn = document.getElementById('login-btn');
-  loginBtn?.addEventListener('click', () => login());
+  loginBtn?.addEventListener('click', () => {
+    if (!authAvailable) {
+      alert('Authentication service is currently unavailable. Please try again later.');
+      return;
+    }
+    
+    try {
+      login();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Login failed';
+      alert(message);
+    }
+  });
 
   // Logout button
   const logoutBtn = document.getElementById('logout-btn');

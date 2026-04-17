@@ -1,50 +1,61 @@
 import { getConfig, buildUrl } from './config';
 import { getToken } from './auth';
-import type { PlatformService } from './types';
+import type { PlatformService, ServiceCategory } from './types';
 
 /**
- * Default services for fallback/development
+ * Default services with functional names (no product names)
+ * Ordered by displayOrder for consistent layout
  */
 const defaultServices: PlatformService[] = [
   {
     id: 'keycloak',
-    name: 'Keycloak',
-    description: 'Identity & Access Management',
+    name: 'Identity & Access',
+    description: 'Authentication and authorization',
     path: '/keycloak',
     icon: 'key',
-    category: 'security'
-  },
-  {
-    id: 'argocd',
-    name: 'Argo CD',
-    description: 'GitOps Continuous Delivery',
-    path: '/argocd',
-    icon: 'git-branch',
-    category: 'deployment'
-  },
-  {
-    id: 'grafana',
-    name: 'Grafana',
-    description: 'Observability & Dashboards',
-    path: '/grafana',
-    icon: 'chart',
-    category: 'monitoring'
+    category: 'security',
+    requiresAuth: false,
+    displayOrder: 1
   },
   {
     id: 'backstage',
-    name: 'Backstage',
-    description: 'Developer Portal',
+    name: 'Developer Portal',
+    description: 'Service catalog and documentation',
     path: '/backstage',
     icon: 'code',
-    category: 'developer'
+    category: 'developer',
+    requiresAuth: false,
+    displayOrder: 2
   },
   {
     id: 'gitea',
-    name: 'Gitea',
-    description: 'Git Repository Service',
+    name: 'Source Control',
+    description: 'Git repositories and code review',
     path: '/gitea',
     icon: 'git',
-    category: 'developer'
+    category: 'developer',
+    requiresAuth: false,
+    displayOrder: 3
+  },
+  {
+    id: 'argocd',
+    name: 'GitOps',
+    description: 'Continuous delivery and deployments',
+    path: '/argocd',
+    icon: 'rocket',
+    category: 'deployment',
+    requiresAuth: true,
+    displayOrder: 4
+  },
+  {
+    id: 'grafana',
+    name: 'Monitoring',
+    description: 'Metrics and dashboards',
+    path: '/grafana',
+    icon: 'chart',
+    category: 'monitoring',
+    requiresAuth: true,
+    displayOrder: 5
   }
 ];
 
@@ -72,46 +83,40 @@ export async function fetchServices(): Promise<PlatformService[]> {
 
     if (!response.ok) {
       console.warn(`Services API returned ${response.status}, using defaults`);
-      return defaultServices;
+      return sortServices(defaultServices);
     }
 
     const services: PlatformService[] = await response.json();
-    return services.length > 0 ? services : defaultServices;
+    return services.length > 0 ? sortServices(services) : sortServices(defaultServices);
   } catch (error) {
     console.warn('Failed to fetch services, using defaults:', error);
-    return defaultServices;
+    return sortServices(defaultServices);
   }
 }
 
 /**
- * Group services by category
+ * Sort services by displayOrder
  */
-export function groupByCategory(
-  services: PlatformService[]
-): Map<string, PlatformService[]> {
-  const groups = new Map<string, PlatformService[]>();
-  
-  for (const service of services) {
-    const category = service.category || 'other';
-    const existing = groups.get(category) || [];
-    groups.set(category, [...existing, service]);
-  }
-  
-  return groups;
+function sortServices(services: PlatformService[]): PlatformService[] {
+  return [...services].sort((a, b) => {
+    const orderA = a.displayOrder ?? 999;
+    const orderB = b.displayOrder ?? 999;
+    return orderA - orderB;
+  });
 }
 
 /**
  * Get category display name
  */
-export function getCategoryName(category: string): string {
+export function getCategoryName(category: ServiceCategory | string): string {
   const names: Record<string, string> = {
-    security: 'Security & Identity',
-    deployment: 'Deployment & GitOps',
-    monitoring: 'Monitoring & Observability',
-    developer: 'Developer Tools',
-    data: 'Data & Storage',
-    messaging: 'Messaging & Events',
-    other: 'Other Services'
+    security: 'Security',
+    deployment: 'Deployment',
+    monitoring: 'Observability',
+    developer: 'Developer',
+    data: 'Data',
+    messaging: 'Messaging',
+    other: 'Other'
   };
   
   return names[category] || category;
