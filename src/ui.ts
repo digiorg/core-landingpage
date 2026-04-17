@@ -42,7 +42,7 @@ function renderHeader(authenticated: boolean, username?: string, theme?: Theme, 
     <header class="header">
       <div class="header-left">
         <a href="/" class="logo" aria-label="DigiOrg Platform Home">
-          ${getIcon('digiorg-logo')}
+          ${getIcon('digiorg-logo').replace('<svg', '<svg class="logo-icon"')}
           <span class="logo-text">DigiOrg Platform</span>
         </a>
       </div>
