@@ -39,7 +39,7 @@ export async function initAuth(): Promise<boolean> {
   } catch (error) {
     console.error('Failed to initialize Keycloak:', error);
     authInitialized = false;
-    authError = error instanceof Error ? error.message : 'Authentication service unavailable';
+    authError = 'Authentication service is temporarily unavailable. Please try again later.';
     return false;
   }
 }
