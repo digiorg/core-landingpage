@@ -7,12 +7,34 @@ let authInitialized = false;
 let authError: string | null = null;
 
 /**
- * Initialize Keycloak authentication
- * Uses silent SSO check for better UX
+ * Check if the browser is in a secure context (HTTPS or localhost).
+ * Web Crypto API (required by keycloak-js) is only available in secure contexts.
+ */
+function isSecureContext(): boolean {
+  return window.isSecureContext ||
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname === '[::1]';
+}
+
+/**
+ * Initialize Keycloak authentication.
+ * On insecure HTTP contexts, skips keycloak-js (Web Crypto unavailable)
+ * and falls back to direct OIDC redirect on login.
  */
 export async function initAuth(): Promise<boolean> {
   const config = getConfig();
-  
+
+  // keycloak-js requires Web Crypto API (for PKCE / token handling).
+  // Web Crypto is only available in secure contexts (HTTPS / localhost).
+  // On plain HTTP, skip init silently — login() will use direct redirect fallback.
+  if (!isSecureContext()) {
+    console.info('Insecure context (HTTP): skipping keycloak-js init, using direct login redirect.');
+    authInitialized = false;
+    authError = null; // Not an error — expected behaviour on HTTP
+    return false;
+  }
+
   keycloakInstance = new Keycloak({
     url: config.keycloak.url,
     realm: config.keycloak.realm,
@@ -23,15 +45,14 @@ export async function initAuth(): Promise<boolean> {
     const authenticated = await keycloakInstance.init({
       onLoad: 'check-sso',
       silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
-      checkLoginIframe: false, // Disabled due to modern browser restrictions
-      // pkceMethod: 'S256' — disabled: Web Crypto API requires HTTPS (not available on http://)
+      checkLoginIframe: false,
+      pkceMethod: 'S256' // Safe: only reached in secure contexts (HTTPS)
     });
 
     authInitialized = true;
     authError = null;
 
     if (authenticated) {
-      // Set up token refresh
       setupTokenRefresh();
     }
 
