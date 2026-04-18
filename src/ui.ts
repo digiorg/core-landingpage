@@ -35,7 +35,7 @@ export function renderApp(services: PlatformService[], theme: Theme): void {
 /**
  * Render header with logo, user info, and theme toggle
  */
-function renderHeader(authenticated: boolean, username?: string, theme?: Theme, authAvailable?: boolean): string {
+function renderHeader(authenticated: boolean, username?: string, theme?: Theme, _authAvailable?: boolean): string {
   const currentTheme = theme || getTheme();
   
   return `
@@ -60,7 +60,7 @@ function renderHeader(authenticated: boolean, username?: string, theme?: Theme, 
             </button>
           </div>
         ` : `
-          <button class="btn btn-primary" id="login-btn" ${!authAvailable ? 'disabled title="Authentication service unavailable"' : ''}>
+          <button class="btn btn-primary" id="login-btn">
             ${getIcon('log-in')}
             <span>Login</span>
           </button>
@@ -172,7 +172,7 @@ function renderFooter(): string {
 /**
  * Attach event listeners
  */
-function attachEventListeners(authAvailable: boolean): void {
+function attachEventListeners(_authAvailable: boolean): void {
   // Theme toggle
   const themeToggle = document.getElementById('theme-toggle');
   themeToggle?.addEventListener('click', () => {
@@ -183,20 +183,10 @@ function attachEventListeners(authAvailable: boolean): void {
     }
   });
 
-  // Login button
+  // Login button — always clickable; login() handles fallback internally
   const loginBtn = document.getElementById('login-btn');
   loginBtn?.addEventListener('click', () => {
-    if (!authAvailable) {
-      alert('Authentication service is currently unavailable. Please try again later.');
-      return;
-    }
-    
-    try {
-      login();
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Login failed';
-      alert(message);
-    }
+    login();
   });
 
   // Logout button

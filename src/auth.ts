@@ -24,7 +24,7 @@ export async function initAuth(): Promise<boolean> {
       onLoad: 'check-sso',
       silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
       checkLoginIframe: false, // Disabled due to modern browser restrictions
-      pkceMethod: 'S256'
+      // pkceMethod: 'S256' — disabled: Web Crypto API requires HTTPS (not available on http://)
     });
 
     authInitialized = true;
@@ -45,23 +45,26 @@ export async function initAuth(): Promise<boolean> {
 }
 
 /**
- * Trigger login flow
- * Throws error if Keycloak is not available
+ * Trigger login flow.
+ * Uses Keycloak JS adapter if initialized, otherwise falls back to a direct
+ * OIDC redirect. The fallback works without Web Crypto API (HTTP environments).
  */
 export function login(): void {
-  if (!keycloakInstance) {
-    const errorMsg = 'Authentication service is not available. Please try again later.';
-    console.error(errorMsg);
-    throw new Error(errorMsg);
+  if (keycloakInstance && authInitialized) {
+    keycloakInstance.login();
+  } else {
+    // Fallback: direct redirect to Keycloak authorization endpoint.
+    // Does not require PKCE / Web Crypto API — works over plain HTTP.
+    const config = getConfig();
+    const params = new URLSearchParams({
+      client_id: config.keycloak.clientId,
+      redirect_uri: window.location.href,
+      response_type: 'code',
+      scope: 'openid',
+    });
+    window.location.href =
+      `${config.keycloak.url}/realms/${config.keycloak.realm}/protocol/openid-connect/auth?${params}`;
   }
-  
-  if (!authInitialized) {
-    const errorMsg = authError || 'Authentication service failed to initialize.';
-    console.error(errorMsg);
-    throw new Error(errorMsg);
-  }
-  
-  keycloakInstance.login();
 }
 
 /**
