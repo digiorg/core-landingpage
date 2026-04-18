@@ -1,4 +1,4 @@
-import { getConfig, buildUrl } from './config';
+import { buildUrl } from './config';
 import { getToken } from './auth';
 import type { PlatformService, ServiceCategory } from './types';
 
@@ -9,7 +9,7 @@ import type { PlatformService, ServiceCategory } from './types';
 const defaultServices: PlatformService[] = [
   {
     id: 'keycloak',
-    name: 'Identity & Access',
+    name: 'Identities & Access',
     description: 'Authentication and authorization',
     path: '/keycloak',
     icon: 'key',
@@ -19,7 +19,7 @@ const defaultServices: PlatformService[] = [
   },
   {
     id: 'backstage',
-    name: 'Developer Portal',
+    name: 'Components & Catalog',
     description: 'Service catalog and documentation',
     path: '/backstage',
     icon: 'code',
@@ -29,7 +29,7 @@ const defaultServices: PlatformService[] = [
   },
   {
     id: 'gitea',
-    name: 'Source Control',
+    name: 'Repositories & Pipelines',
     description: 'Git repositories and code review',
     path: '/gitea',
     icon: 'git',
@@ -39,7 +39,7 @@ const defaultServices: PlatformService[] = [
   },
   {
     id: 'argocd',
-    name: 'GitOps',
+    name: 'GitOps & Deployment',
     description: 'Continuous delivery and deployments',
     path: '/argocd',
     icon: 'rocket',
@@ -49,7 +49,7 @@ const defaultServices: PlatformService[] = [
   },
   {
     id: 'grafana',
-    name: 'Monitoring',
+    name: 'Logging & Monitoring',
     description: 'Metrics and dashboards',
     path: '/grafana',
     icon: 'chart',
