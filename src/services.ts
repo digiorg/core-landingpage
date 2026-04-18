@@ -1,4 +1,4 @@
-import { buildUrl } from './config';
+import { buildUrl, getConfig } from './config';
 import { getToken } from './auth';
 import type { PlatformService, ServiceCategory } from './types';
 
