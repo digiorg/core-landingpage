@@ -4,9 +4,9 @@ import type { PlatformConfig } from './types';
  * Default configuration for local development
  */
 const defaultConfig: PlatformConfig = {
-  baseUrl: 'http://digiorg.local',
+  baseUrl: 'https://digiorg.local',
   keycloak: {
-    url: 'http://digiorg.local/keycloak',
+    url: 'https://digiorg.local/keycloak',
     realm: 'digiorg-core-platform',
     clientId: 'landingpage'
   },
