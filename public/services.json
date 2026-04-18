@@ -1,7 +1,7 @@
 [
   {
     "id": "keycloak",
-    "name": "Identity & Access",
+    "name": "Identities & Access",
     "description": "Authentication and authorization",
     "path": "/keycloak",
     "icon": "key",
@@ -11,7 +11,7 @@
   },
   {
     "id": "backstage",
-    "name": "Developer Portal",
+    "name": "Components & Catalog",
     "description": "Service catalog and documentation",
     "path": "/backstage",
     "icon": "code",
@@ -21,7 +21,7 @@
   },
   {
     "id": "gitea",
-    "name": "Source Control",
+    "name": "Repositories & Pipelines",
     "description": "Git repositories and code review",
     "path": "/gitea",
     "icon": "git",
@@ -31,7 +31,7 @@
   },
   {
     "id": "argocd",
-    "name": "GitOps",
+    "name": "GitOps & Deployment",
     "description": "Continuous delivery and deployments",
     "path": "/argocd",
     "icon": "rocket",
@@ -41,7 +41,7 @@
   },
   {
     "id": "grafana",
-    "name": "Monitoring",
+    "name": "Logging & Monitoring",
     "description": "Metrics and dashboards",
     "path": "/grafana",
     "icon": "chart",
