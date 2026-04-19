@@ -24,7 +24,7 @@ const defaultServices: PlatformService[] = [
     path: '/backstage',
     icon: 'code',
     category: 'developer',
-    requiresAuth: false,
+    requiresAuth: true,
     displayOrder: 2
   },
   {
@@ -34,7 +34,7 @@ const defaultServices: PlatformService[] = [
     path: '/gitea',
     icon: 'git',
     category: 'developer',
-    requiresAuth: false,
+    requiresAuth: true,
     displayOrder: 3
   },
   {
