@@ -56,16 +56,6 @@ const defaultServices: PlatformService[] = [
     category: 'monitoring',
     requiresAuth: true,
     displayOrder: 5
-  },
-  {
-    id: 'nats',
-    name: 'Messaging & Events',
-    description: 'Event streaming and messaging infrastructure',
-    path: '/nats',
-    icon: 'message',
-    category: 'messaging',
-    requiresAuth: true,
-    displayOrder: 6
   }
 ];
 
