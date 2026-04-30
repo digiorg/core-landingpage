@@ -28,10 +28,11 @@ export interface PlatformService {
 /**
  * Service categories for grouping
  */
-export type ServiceCategory = 
+export type ServiceCategory =
   | 'security'
   | 'deployment'
   | 'monitoring'
+  | 'observability'
   | 'developer'
   | 'data'
   | 'messaging'

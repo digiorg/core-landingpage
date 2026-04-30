@@ -56,6 +56,16 @@ const defaultServices: PlatformService[] = [
     category: 'monitoring',
     requiresAuth: true,
     displayOrder: 5
+  },
+  {
+    id: 'jaeger',
+    name: 'Distributed Tracing',
+    description: 'Trace requests across services',
+    path: '/jaeger',
+    icon: 'tracing',
+    category: 'observability',
+    requiresAuth: true,
+    displayOrder: 6
   }
 ];
 
@@ -113,6 +123,7 @@ export function getCategoryName(category: ServiceCategory | string): string {
     security: 'Security',
     deployment: 'Deployment',
     monitoring: 'Observability',
+    observability: 'Observability',
     developer: 'Developer',
     data: 'Data',
     messaging: 'Messaging',
