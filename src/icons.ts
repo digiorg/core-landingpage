@@ -69,7 +69,21 @@ const icons: Record<string, string> = {
   activity: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
   </svg>`,
-  
+
+  tracing: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="3" y1="12" x2="21" y2="12"/>
+  <line x1="5" y1="7" x2="14" y2="7"/>
+  <circle cx="5" cy="7" r="1.5" fill="currentColor" stroke="none"/>
+  <circle cx="14" cy="7" r="1.5" fill="currentColor" stroke="none"/>
+  <line x1="8" y1="17" x2="19" y2="17"/>
+  <circle cx="8" cy="17" r="1.5" fill="currentColor" stroke="none"/>
+  <circle cx="19" cy="17" r="1.5" fill="currentColor" stroke="none"/>
+  <line x1="5" y1="12" x2="5" y2="7" stroke-dasharray="2 2"/>
+  <line x1="14" y1="12" x2="14" y2="7" stroke-dasharray="2 2"/>
+  <line x1="8" y1="12" x2="8" y2="17" stroke-dasharray="2 2"/>
+  <line x1="19" y1="12" x2="19" y2="17" stroke-dasharray="2 2"/>
+</svg>`,
+
   // Developer
   code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="16 18 22 12 16 6"/>
