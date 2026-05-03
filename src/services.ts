@@ -66,6 +66,16 @@ const defaultServices: PlatformService[] = [
     category: 'observability',
     requiresAuth: true,
     displayOrder: 6
+  },
+  {
+    id: 'sonarqube',
+    name: 'Code Quality & Security',
+    description: 'Static analysis, bugs, vulnerabilities',
+    path: '/sonarqube',
+    icon: 'code-quality',
+    category: 'devsecops',
+    requiresAuth: true,
+    displayOrder: 7
   }
 ];
 
@@ -127,6 +137,7 @@ export function getCategoryName(category: ServiceCategory | string): string {
     developer: 'Developer',
     data: 'Data',
     messaging: 'Messaging',
+    devsecops: 'DevSecOps',
     other: 'Other'
   };
   

@@ -70,6 +70,13 @@ const icons: Record<string, string> = {
     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
   </svg>`,
 
+  // Code Quality
+  'code-quality': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="10.5" cy="10.5" r="7.5"/>
+  <line x1="21" y1="21" x2="15.8" y2="15.8"/>
+  <polyline points="7.5 10.5 9.5 12.5 13.5 8.5"/>
+</svg>`,
+
   tracing: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <line x1="3" y1="12" x2="21" y2="12"/>
   <line x1="5" y1="7" x2="14" y2="7"/>
