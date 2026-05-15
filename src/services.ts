@@ -29,13 +29,23 @@ const defaultServices: PlatformService[] = [
   },
   {
     id: 'gitea',
-    name: 'Repositories & Pipelines',
+    name: 'Repository & Pipelines',
     description: 'Git repositories and code review',
     path: '/gitea',
     icon: 'git',
     category: 'developer',
     requiresAuth: true,
     displayOrder: 3
+  },
+  {
+    id: 'sonarqube',
+    name: 'Code Quality & Security',
+    description: 'Static analysis, bugs, vulnerabilities',
+    path: '/sonarqube',
+    icon: 'code-quality',
+    category: 'devsecops',
+    requiresAuth: true,
+    displayOrder: 4
   },
   {
     id: 'argocd',
@@ -45,7 +55,7 @@ const defaultServices: PlatformService[] = [
     icon: 'rocket',
     category: 'deployment',
     requiresAuth: true,
-    displayOrder: 4
+    displayOrder: 5
   },
   {
     id: 'grafana',
@@ -55,25 +65,15 @@ const defaultServices: PlatformService[] = [
     icon: 'chart',
     category: 'monitoring',
     requiresAuth: true,
-    displayOrder: 5
-  },
-  {
-    id: 'jaeger',
-    name: 'Distributed Tracing',
-    description: 'Trace requests across services',
-    path: '/jaeger',
-    icon: 'tracing',
-    category: 'observability',
-    requiresAuth: true,
     displayOrder: 6
   },
   {
-    id: 'sonarqube',
-    name: 'Code Quality & Security',
-    description: 'Static analysis, bugs, vulnerabilities',
-    path: '/sonarqube',
-    icon: 'code-quality',
-    category: 'devsecops',
+    id: 'jaeger',
+    name: 'Tracing & Observing',
+    description: 'Trace and observe requests across services',
+    path: '/jaeger',
+    icon: 'tracing',
+    category: 'observability',
     requiresAuth: true,
     displayOrder: 7
   }

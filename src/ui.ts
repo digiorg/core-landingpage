@@ -108,7 +108,10 @@ function renderLoginPrompt(): string {
 }
 
 /**
- * Render services in a flat grid (no category separators)
+ * Render services in a structured 3-row grid layout:
+ * Row 1: Keycloak hero tile spanning all 3 columns
+ * Row 2: Backstage | Gitea | SonarQube
+ * Row 3: ArgoCD | Grafana | Jaeger
  */
 function renderServices(services: PlatformService[], authenticated: boolean): string {
   if (services.length === 0) {
@@ -124,7 +127,7 @@ function renderServices(services: PlatformService[], authenticated: boolean): st
   return `
     <section class="services">
       <div class="service-grid">
-        ${services.map(service => renderServiceCard(service, authenticated)).join('')}
+        ${services.map((service, index) => renderServiceCard(service, authenticated, index === 0)).join('')}
       </div>
     </section>
   `;
@@ -133,16 +136,16 @@ function renderServices(services: PlatformService[], authenticated: boolean): st
 /**
  * Render individual service card (square tile with category badge)
  */
-function renderServiceCard(service: PlatformService, authenticated: boolean): string {
+function renderServiceCard(service: PlatformService, authenticated: boolean, isHero = false): string {
   const url = buildUrl(service.path);
   const requiresAuth = service.requiresAuth !== false;
   const disabled = requiresAuth && !authenticated;
   const categoryName = service.category ? getCategoryName(service.category) : '';
 
   return `
-    <a 
+    <a
       href="${disabled ? '#' : url}"
-      class="service-card ${disabled ? 'disabled' : ''}"
+      class="service-card${isHero ? ' service-card--hero' : ''} ${disabled ? 'disabled' : ''}"
       ${disabled ? 'aria-disabled="true"' : ''}
       ${!disabled ? 'target="_blank" rel="noopener"' : ''}
     >
