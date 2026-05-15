@@ -107,27 +107,25 @@ function renderLoginPrompt(): string {
   `;
 }
 
-/**
- * Render services in a structured 3-row grid layout:
- * Row 1: Keycloak hero tile spanning all 3 columns
- * Row 2: Backstage | Gitea | SonarQube
- * Row 3: ArgoCD | Grafana | Jaeger
- */
 function renderServices(services: PlatformService[], authenticated: boolean): string {
   if (services.length === 0) {
-    return `
-      <section class="services">
-        <div class="service-grid">
-          <p>No services available.</p>
-        </div>
-      </section>
-    `;
+    return `<section class="services"><p>No services available.</p></section>`;
   }
+
+  const hero = services[0];
+  const row2 = services.slice(1, 4);
+  const row3 = services.slice(4, 7);
 
   return `
     <section class="services">
-      <div class="service-grid">
-        ${services.map((service, index) => renderServiceCard(service, authenticated, index === 0)).join('')}
+      <div class="service-row service-row--hero">
+        ${renderServiceCard(hero, authenticated, true)}
+      </div>
+      <div class="service-row service-row--tiles">
+        ${row2.map(s => renderServiceCard(s, authenticated, false)).join('')}
+      </div>
+      <div class="service-row service-row--tiles">
+        ${row3.map(s => renderServiceCard(s, authenticated, false)).join('')}
       </div>
     </section>
   `;
