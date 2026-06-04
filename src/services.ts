@@ -76,6 +76,16 @@ const defaultServices: PlatformService[] = [
     category: 'observability',
     requiresAuth: true,
     displayOrder: 7
+  },
+  {
+    id: 'opencost',
+    name: 'Cloud Costs',
+    description: 'Kubernetes cost monitoring & allocation',
+    path: '/opencost',
+    icon: 'chart',
+    category: 'monitoring',
+    requiresAuth: true,
+    displayOrder: 8
   }
 ];
 

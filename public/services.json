@@ -50,6 +50,26 @@
     "displayOrder": 5
   },
   {
+    "id": "jaeger",
+    "name": "Tracing & Observing",
+    "description": "Distributed Tracing & Observing",
+    "path": "/jaeger",
+    "icon": "tracing",
+    "category": "observability",
+    "requiresAuth": true,
+    "displayOrder": 6
+  },
+  {
+    "id": "sonarqube",
+    "name": "Code Quality & Security",
+    "description": "Static analysis, bugs, vulnerabilities",
+    "path": "/sonarqube",
+    "icon": "code-quality",
+    "category": "devsecops",
+    "requiresAuth": true,
+    "displayOrder": 7
+  },
+  {
     "id": "opencost",
     "name": "Cloud Costs",
     "description": "Kubernetes cost monitoring & allocation",

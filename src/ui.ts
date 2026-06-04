@@ -113,20 +113,24 @@ function renderServices(services: PlatformService[], authenticated: boolean): st
   }
 
   const hero = services[0];
-  const row2 = services.slice(1, 4);
-  const row3 = services.slice(4, 7);
+  const remaining = services.slice(1);
+
+  // Chunk remaining services into rows of 3 — supports any number of services dynamically
+  const rows: PlatformService[][] = [];
+  for (let i = 0; i < remaining.length; i += 3) {
+    rows.push(remaining.slice(i, i + 3));
+  }
 
   return `
     <section class="services">
       <div class="service-row service-row--hero">
         ${renderServiceCard(hero, authenticated, true)}
       </div>
-      <div class="service-row service-row--tiles">
-        ${row2.map(s => renderServiceCard(s, authenticated, false)).join('')}
-      </div>
-      <div class="service-row service-row--tiles">
-        ${row3.map(s => renderServiceCard(s, authenticated, false)).join('')}
-      </div>
+      ${rows.map(row => `
+        <div class="service-row service-row--tiles">
+          ${row.map(s => renderServiceCard(s, authenticated, false)).join('')}
+        </div>
+      `).join('')}
     </section>
   `;
 }
