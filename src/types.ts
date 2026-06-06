@@ -37,6 +37,7 @@ export type ServiceCategory =
   | 'data'
   | 'messaging'
   | 'devsecops'
+  | 'infrastructure'
   | 'other';
 
 /**
