@@ -86,6 +86,16 @@ const defaultServices: PlatformService[] = [
     category: 'monitoring',
     requiresAuth: true,
     displayOrder: 8
+  },
+  {
+    id: 'harbor',
+    name: 'Harbor Registry',
+    description: 'OCI container registry with vulnerability scanning',
+    path: '/harbor',
+    icon: 'server',
+    category: 'infrastructure',
+    requiresAuth: true,
+    displayOrder: 9
   }
 ];
 
@@ -148,6 +158,7 @@ export function getCategoryName(category: ServiceCategory | string): string {
     data: 'Data',
     messaging: 'Messaging',
     devsecops: 'DevSecOps',
+    infrastructure: 'Infrastructure',
     other: 'Other'
   };
   
